@@ -70,7 +70,7 @@ Ball generate_ball()
     std::uniform_real_distribution<double> dist(0.0, 1.0);
     std::random_device rd;
 
-    double x, y, z, vx, vy, vz;
+    double x, y, z, vx, vy, vz, mass;
 
     x = dist(rd) * WORLD_WIDTH;
     y = dist(rd) * WORLD_DEPTH;
@@ -80,7 +80,9 @@ Ball generate_ball()
     vy = dist(rd) * WORLD_DEPTH / 2;
     vz = dist(rd) * WORLD_HEIGHT / 2;
 
-    return (Ball(RADIOUS, x, y, z, vx, vy, vz));
+    mass = dist(rd) * 5;
+
+    return (Ball(RADIOUS, x, y, z, vx, vy, vz, mass));
 }
 
 // Function that takes the console inputs and proccess it in order to overwrite the constants 

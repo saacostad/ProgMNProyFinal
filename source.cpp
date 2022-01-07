@@ -38,6 +38,7 @@ int main (int argc, char *argv[])
         print_results(i * dt, p);
 
         calculate_forces(p);
+        p.calculate_acc(dt);
         p.calculate_vel(dt);
         p.calculate_pos(dt);
 
@@ -56,7 +57,10 @@ void calculate_forces(Ball &particle)
     // All time, the particle is interacting with gravity, so one force
     // acting constantly is gravity
 
-    particle.az = G;
+    if (particle.z - particle.radio > 0)
+    {
+        particle.fz = particle.mass * G;
+    }
 
     // Now lets check if the particle is interacting with any of the walls
     double delta;
@@ -65,50 +69,52 @@ void calculate_forces(Ball &particle)
     delta = particle.x - particle.radio;
     if (delta < 0)
     {
-        particle.ax += -K * delta; 
+        particle.fx += -K * delta; 
     }
 
     // For right wall
     delta = particle.x + particle.radio - WORLD_WIDTH;
     if (delta > 0)
     {
-        particle.ax += -K * delta;
+        particle.fx += -K * delta;
     }
 
     // For front wall
     delta = particle.y - particle.radio;
     if (delta < 0)
     {
-        particle.ay += -K * delta;
+        particle.fy += -K * delta;
     }
 
     // For back wall
     delta = particle.y + particle.radio - WORLD_DEPTH;
     if (delta > 0)
     {
-        particle.ay += -K * delta;
+        particle.fy += -K * delta;
     }
 
     // For the roof
     delta = particle.z + particle.radio - WORLD_HEIGHT;
     if (delta > 0)
     {
-        particle.az += -K * delta;
+        particle.fz += -K * delta;
     }
 
     // For the floor
     delta = particle.z - particle.radio;
     if (delta < 0)
     {
-        particle.az += -K * delta;
+        particle.fz += -K * delta;
     }
 
 }
 
 void print_results(double time, Ball particle)
 {
-    std::cout << time << " " 
-    << particle.x << " " 
-    << particle.y << " "
-    << particle.z << std::endl;
+    std::cout << time << "  "
+    << particle.x << "  " 
+    << particle.y << "  "
+    << particle.z << "  "
+    << particle.vz << " "
+    << particle.az <<std::endl;
 }
