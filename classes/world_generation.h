@@ -4,6 +4,7 @@
 #include <random>
 #include <vector>
 #include <iostream>
+#include <chrono>
 
 #include "constants.h"
 #include "ball.h"
@@ -72,9 +73,12 @@ Ball generate_ball()
 
     double x, y, z, vx, vy, vz, mass;
 
-    x = dist(rd) * WORLD_WIDTH;
-    y = dist(rd) * WORLD_DEPTH;
-    z = dist(rd) *  WORLD_HEIGHT;
+    double seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::mt19937 generator (seed);
+
+    x = dist(rd) * (int)WORLD_WIDTH;
+    y = dist(rd) * (int)WORLD_DEPTH;
+    z = dist(rd) * (int)WORLD_HEIGHT;
 
     vx = dist(rd) * WORLD_WIDTH / 2;
     vy = dist(rd) * WORLD_DEPTH / 2;
